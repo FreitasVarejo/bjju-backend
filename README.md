@@ -155,12 +155,12 @@ node -e "console.log(require('crypto').randomBytes(16).toString('base64'))"
 
 ### Diferença dev vs. prod no .env
 
-| Variável | Dev (local) | Prod (Docker) |
-|---|---|---|
-| `DATABASE_CLIENT` | `sqlite` | `postgres` |
-| `DATABASE_FILENAME` | `.tmp/data.db` | — |
-| `DATABASE_HOST` | — | `postgres` (nome do serviço) |
-| `DATABASE_PASSWORD` | — | senha forte |
+| Variável                   | Dev (local)                | Prod (Docker)                |
+| -------------------------- | -------------------------- | ---------------------------- |
+| `DATABASE_CLIENT`          | `sqlite`                   | `postgres`                   |
+| `DATABASE_FILENAME`        | `.tmp/data.db`             | —                            |
+| `DATABASE_HOST`            | —                          | `postgres` (nome do serviço) |
+| `DATABASE_PASSWORD`        | —                          | senha forte                  |
 | Secrets (`APP_KEYS`, etc.) | valores simples para teste | valores gerados com `crypto` |
 
 ---
@@ -201,13 +201,13 @@ O repositório inclui um workflow em `.github/workflows/deploy.yml` que faz o de
 
 Vá em **Settings → Secrets and variables → Actions** no repositório e crie os seguintes secrets:
 
-| Secret | Descrição | Exemplo |
-|---|---|---|
-| `SSH_HOST` | IP ou hostname do servidor | `123.456.78.90` |
-| `SSH_USER` | Usuário SSH do servidor | `ubuntu` ou `deploy` |
-| `SSH_PRIVATE_KEY` | Conteúdo da chave SSH privada | `-----BEGIN OPENSSH PRIVATE KEY-----...` |
-| `SSH_PORT` | Porta SSH (padrão: 22) | `22` |
-| `DEPLOY_PATH` | Caminho absoluto do projeto no servidor | `/opt/bjju-backend` |
+| Secret            | Descrição                               | Exemplo                                  |
+| ----------------- | --------------------------------------- | ---------------------------------------- |
+| `SSH_HOST`        | IP ou hostname do servidor              | `123.456.78.90`                          |
+| `SSH_USER`        | Usuário SSH do servidor                 | `ubuntu` ou `deploy`                     |
+| `SSH_PRIVATE_KEY` | Conteúdo da chave SSH privada           | `-----BEGIN OPENSSH PRIVATE KEY-----...` |
+| `SSH_PORT`        | Porta SSH (padrão: 22)                  | `22`                                     |
+| `DEPLOY_PATH`     | Caminho absoluto do projeto no servidor | `/opt/bjju-backend`                      |
 
 ### Configurando o servidor pela primeira vez
 
