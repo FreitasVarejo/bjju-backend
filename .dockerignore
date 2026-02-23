@@ -1,0 +1,44 @@
+# Dependências
+node_modules/
+
+# Build artifacts
+dist/
+.cache/
+.strapi/
+
+# Banco SQLite local
+.tmp/
+
+# Variáveis de ambiente com secrets
+.env
+.env.local
+.env.*.local
+
+# Dados de seed e uploads locais (não entram na imagem)
+data/uploads/
+
+# Git
+.git/
+.gitignore
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testes
+coverage/
+*.test.*
+*.spec.*
+
+# Docs
+README.md

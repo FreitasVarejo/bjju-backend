@@ -1,0 +1,53 @@
+services:
+  # ---------------------------------------------------------------------------
+  # Strapi — CMS headless
+  # ---------------------------------------------------------------------------
+  strapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bjju-strapi
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: ${POSTGRES_DB:-strapi}
+      DATABASE_USERNAME: ${POSTGRES_USER:-strapi}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+      DATABASE_SSL: "false"
+    volumes:
+      # Persiste os uploads de mídia entre deploys
+      - strapi-uploads:/app/public/uploads
+    ports:
+      # Expõe apenas localmente — o Cloudflare Tunnel aponta para cá
+      - "127.0.0.1:1337:1337"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ---------------------------------------------------------------------------
+  # PostgreSQL — banco de dados relacional
+  # ---------------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: bjju-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-strapi}
+      POSTGRES_USER: ${POSTGRES_USER:-strapi}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      # Persiste os dados do banco entre reinicializações
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-strapi} -d ${POSTGRES_DB:-strapi}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres-data:
+  strapi-uploads:
