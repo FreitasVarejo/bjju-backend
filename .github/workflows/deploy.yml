@@ -14,5 +14,6 @@ jobs:
 
       - name: Build and Deploy
         run: |
+          cp /home/saul/envs/bjju-backend.env .env
           docker compose -f docker-compose.yml up -d --build --remove-orphans
           docker image prune -f
