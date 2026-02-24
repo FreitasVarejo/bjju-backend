@@ -1,0 +1,45 @@
+{
+  "kind": "collectionType",
+  "collectionName": "treinos",
+  "info": {
+    "singularName": "treino",
+    "pluralName": "treinos",
+    "displayName": "Treinos"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "slug": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "weekday": {
+      "type": "integer",
+      "required": true
+    },
+    "category": {
+      "type": "integer",
+      "required": true,
+      "unique": false
+    },
+    "startTime": {
+      "type": "time",
+      "required": true
+    },
+    "endTime": {
+      "type": "time",
+      "required": true
+    },
+    "instructor": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

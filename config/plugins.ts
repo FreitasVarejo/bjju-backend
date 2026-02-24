@@ -1,5 +1,8 @@
-import type { Core } from '@strapi/strapi';
-
-const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Plugin => ({});
-
-export default config;
+export default () => ({
+  'webp-converter': {
+    enabled: true,
+    config: {
+      mimeTypes: ['image/png', 'image/jpeg', 'image/jpg'],
+    },
+  },
+});

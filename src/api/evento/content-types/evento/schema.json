@@ -1,0 +1,54 @@
+{
+  "kind": "collectionType",
+  "collectionName": "eventos",
+  "info": {
+    "singularName": "evento",
+    "pluralName": "eventos",
+    "displayName": "Eventos"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "slug": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "unique": false
+    },
+    "date": {
+      "type": "date"
+    },
+    "location": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "category": {
+      "type": "string"
+    },
+    "cover": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "gallery": {
+      "type": "media",
+      "multiple": true,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    }
+  }
+}

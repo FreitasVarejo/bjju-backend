@@ -1,0 +1,50 @@
+{
+  "kind": "collectionType",
+  "collectionName": "instrutores",
+  "info": {
+    "singularName": "instrutor",
+    "pluralName": "instrutores",
+    "displayName": "Instrutores"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "slug": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "year": {
+      "type": "string"
+    },
+    "course": {
+      "type": "string"
+    },
+    "belt": {
+      "type": "enumeration",
+      "enum": [
+        "Preta",
+        "Marrom",
+        "Roxa",
+        "Azul",
+        "Branca"
+      ]
+    },
+    "photo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  }
+}
