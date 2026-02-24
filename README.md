@@ -188,53 +188,35 @@ npm run console
 
 ## Deploy automático via GitHub Actions
 
-O repositório inclui um workflow em `.github/workflows/deploy.yml` que faz o deploy automático para o servidor de produção a cada push na branch `main`.
+O repositório inclui um workflow em `.github/workflows/deploy.yml` que faz o deploy automático a cada push na branch `main`.
 
 ### Como funciona
 
-1. GitHub Actions conecta no servidor via SSH
-2. Navega até o diretório do projeto
-3. Faz `git pull` para atualizar o código
-4. Roda `docker compose up -d --build` para recompilar e reiniciar os containers
+O workflow usa um **self-hosted runner** rodando diretamente no servidor de produção — não há SSH externo envolvido. A cada push:
 
-### Configurando os GitHub Secrets
+1. O runner faz checkout do código no servidor
+2. Copia o arquivo `.env` de produção de `/home/saul/envs/bjju-backend.env` para o diretório do projeto
+3. Roda `docker compose up -d --build --remove-orphans` para recompilar e reiniciar os containers
+4. Remove imagens Docker antigas com `docker image prune -f`
 
-Vá em **Settings → Secrets and variables → Actions** no repositório e crie os seguintes secrets:
+### Não há GitHub Secrets necessários
 
-| Secret            | Descrição                               | Exemplo                                  |
-| ----------------- | --------------------------------------- | ---------------------------------------- |
-| `SSH_HOST`        | IP ou hostname do servidor              | `123.456.78.90`                          |
-| `SSH_USER`        | Usuário SSH do servidor                 | `ubuntu` ou `deploy`                     |
-| `SSH_PRIVATE_KEY` | Conteúdo da chave SSH privada           | `-----BEGIN OPENSSH PRIVATE KEY-----...` |
-| `SSH_PORT`        | Porta SSH (padrão: 22)                  | `22`                                     |
-| `DEPLOY_PATH`     | Caminho absoluto do projeto no servidor | `/opt/bjju-backend`                      |
+Como o runner já roda no servidor, não são necessárias credenciais SSH nem outros secrets no GitHub. O único pré-requisito é que o runner esteja registrado e ativo no repositório.
 
 ### Configurando o servidor pela primeira vez
 
 ```bash
-# No servidor, clone o repositório
-git clone <url-do-repo> /opt/bjju-backend
-cd /opt/bjju-backend
+# No servidor, clone o repositório no diretório esperado pelo runner
+git clone <url-do-repo>
+cd bjju-backend
 
-# Crie e preencha o .env de produção
-cp .env.example .env
-nano .env  # preencha todos os valores
+# Crie o arquivo de .env de produção no caminho esperado pelo workflow
+cp .env.example /home/saul/envs/bjju-backend.env
+nano /home/saul/envs/bjju-backend.env  # preencha todos os valores de produção
 
-# Suba os containers pela primeira vez
+# Suba os containers pela primeira vez manualmente
+cp /home/saul/envs/bjju-backend.env .env
 docker compose up -d --build
 ```
 
 A partir daí, todo push na `main` fará o deploy automaticamente.
-
-### Autorizar a chave SSH do GitHub Actions
-
-```bash
-# Gere um par de chaves dedicado para o deploy (na sua máquina local)
-ssh-keygen -t ed25519 -C "github-actions-deploy" -f ~/.ssh/bjju_deploy
-
-# Adicione a chave pública no servidor
-ssh-copy-id -i ~/.ssh/bjju_deploy.pub usuario@seu-servidor
-
-# Copie a chave privada e cole no GitHub Secret SSH_PRIVATE_KEY
-cat ~/.ssh/bjju_deploy
-```
