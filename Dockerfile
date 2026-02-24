@@ -40,7 +40,8 @@ RUN addgroup -S strapi && adduser -S strapi -G strapi
 COPY --from=builder /app/package.json /app/package-lock.json ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/config ./config
+# Strapi em produção lê config/ como .js — copiamos a versão compilada do dist
+COPY --from=builder /app/dist/config ./config
 COPY --from=builder /app/src ./src
 COPY --from=builder /app/database ./database
 COPY --from=builder /app/public ./public
