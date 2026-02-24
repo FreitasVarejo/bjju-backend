@@ -21,9 +21,15 @@ services:
     volumes:
       # Persiste os uploads de mídia entre deploys
       - strapi-uploads:/app/public/uploads
-    ports:
-      # Expõe apenas localmente — o Cloudflare Tunnel aponta para cá
-      - "127.0.0.1:1337:1337"
+    networks:
+      - default    # comunicação interna com o postgres
+      - proxy_net  # visível pelo Traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy_net"
+      - "traefik.http.routers.bjju-strapi.rule=Host(`files.jiujitsuunicamp.com.br`)"
+      - "traefik.http.routers.bjju-strapi.entrypoints=web"
+      - "traefik.http.services.bjju-strapi.loadbalancer.server.port=1337"
     depends_on:
       postgres:
         condition: service_healthy
@@ -51,3 +57,8 @@ services:
 volumes:
   postgres-data:
   strapi-uploads:
+
+networks:
+  default: {}
+  proxy_net:
+    external: true
