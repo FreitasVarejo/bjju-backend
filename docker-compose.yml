@@ -18,6 +18,7 @@ services:
       DATABASE_USERNAME: ${POSTGRES_USER:-strapi}
       DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
       DATABASE_SSL: "false"
+      URL: ${URL:-https://files.jiujitsuunicamp.com.br}
     volumes:
       # Persiste os uploads de mídia entre deploys
       - strapi-uploads:/app/public/uploads

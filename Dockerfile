@@ -47,6 +47,10 @@ COPY --from=builder /app/database ./database
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/favicon.png ./favicon.png
 
+# tsconfig.json é necessário para que o Strapi detecte o projeto como TypeScript
+# e use /app/dist como distDir (onde o admin panel compilado está em dist/build/)
+COPY --from=builder /app/tsconfig.json ./tsconfig.json
+
 # Cria diretórios de dados e garante permissões ao usuário strapi
 RUN mkdir -p /app/.tmp /app/public/uploads && \
     chown -R strapi:strapi /app

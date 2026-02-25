@@ -163,10 +163,12 @@ O repositório inclui o template padrão do Strapi com: `Article`, `Author`, `Ca
 | `builder` | `node:20-alpine` | Instala deps + roda `npm run build` |
 | `runner` | `node:20-alpine` | Copia apenas artefatos de runtime, usuário não-root `strapi` |
 
+**IMPORTANTE:** O `tsconfig.json` **deve** ser copiado para o runner stage. Sem ele, o comando `strapi start` não detecta o projeto como TypeScript e usa `appDir` (`/app`) como `distDir` em vez de `/app/dist`. Isso faz o admin panel não ser encontrado em `/app/dist/build/` e a UI do Strapi não carrega.
+
 ### docker-compose.yml
 
 Dois serviços:
-- **`strapi`** (`bjju-strapi`): porta `1337`, conectado às redes `default` (interna) e `proxy_net` (Traefik). Volume `strapi-uploads` persiste os uploads de mídia.
+- **`strapi`** (`bjju-strapi`): porta `1337`, conectado às redes `default` (interna) e `proxy_net` (Traefik). Volume `strapi-uploads` persiste os uploads de mídia. A env `URL` define a URL pública do Strapi (usado para gerar URLs absolutas de mídia).
 - **`postgres`** (`bjju-postgres`): `postgres:16-alpine`, healthcheck com `pg_isready`, volume `postgres-data`.
 
 Traefik roteia `files.jiujitsuunicamp.com.br` → container Strapi na porta 1337.
