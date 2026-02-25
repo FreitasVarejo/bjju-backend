@@ -508,7 +508,7 @@ export interface ApiInstrutorInstrutor extends Struct.CollectionTypeSchema {
   };
   attributes: {
     belt: Schema.Attribute.Enumeration<
-      ['Preta', 'Marrom', 'Roxa', 'Azul', 'Branca']
+      ['PRETA', 'MARROM', 'ROXA', 'AZUL', 'BRANCA']
     >;
     course: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
@@ -572,7 +572,9 @@ export interface ApiTreinoTreino extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    category: Schema.Attribute.Integer & Schema.Attribute.Required;
+    category: Schema.Attribute.Enumeration<
+      ['GERAL', 'COMPETICAO', 'FEMININO', 'NOTURNO']
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -585,15 +587,13 @@ export interface ApiTreinoTreino extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    slug: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
     startTime: Schema.Attribute.Time & Schema.Attribute.Required;
-    title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    weekday: Schema.Attribute.Integer & Schema.Attribute.Required;
+    weekday: Schema.Attribute.Enumeration<
+      ['DOMINGO', 'SEGUNDA', 'TERCA', 'QUARTA', 'QUINTA', 'SEXTA', 'SABADO']
+    >;
   };
 }
 

@@ -29,11 +29,11 @@
     "belt": {
       "type": "enumeration",
       "enum": [
-        "Preta",
-        "Marrom",
-        "Roxa",
-        "Azul",
-        "Branca"
+        "PRETA",
+        "MARROM",
+        "ROXA",
+        "AZUL",
+        "BRANCA"
       ]
     },
     "photo": {

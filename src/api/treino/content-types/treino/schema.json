@@ -11,23 +11,26 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "slug": {
-      "type": "string",
-      "required": true,
-      "unique": true
-    },
-    "title": {
-      "type": "string",
-      "required": true
-    },
     "weekday": {
-      "type": "integer",
-      "required": true
+      "type": "enumeration",
+      "enum": [
+        "DOMINGO",
+        "SEGUNDA",
+        "TERCA",
+        "QUARTA",
+        "QUINTA",
+        "SEXTA",
+        "SABADO"
+      ]
     },
     "category": {
-      "type": "integer",
-      "required": true,
-      "unique": false
+      "type": "enumeration",
+      "enum": [
+        "GERAL",
+        "COMPETICAO",
+        "FEMININO",
+        "NOTURNO"
+      ]
     },
     "startTime": {
       "type": "time",
