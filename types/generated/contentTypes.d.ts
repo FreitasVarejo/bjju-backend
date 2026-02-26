@@ -430,39 +430,6 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiCategoriaProdutoCategoriaProduto
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'categoria_produtos';
-  info: {
-    displayName: 'Categoria Produto';
-    pluralName: 'categoria-produtos';
-    singularName: 'categoria-produto';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::categoria-produto.categoria-produto'
-    > &
-      Schema.Attribute.Private;
-    name: Schema.Attribute.String & Schema.Attribute.Required;
-    produtos: Schema.Attribute.Relation<'oneToMany', 'api::produto.produto'>;
-    publishedAt: Schema.Attribute.DateTime;
-    slug: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiEventoEvento extends Struct.CollectionTypeSchema {
   collectionName: 'eventos';
   info: {
@@ -563,46 +530,6 @@ export interface ApiInstrutorInstrutor extends Struct.CollectionTypeSchema {
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     year: Schema.Attribute.String;
-  };
-}
-
-export interface ApiProdutoProduto extends Struct.CollectionTypeSchema {
-  collectionName: 'produtos';
-  info: {
-    displayName: 'Produto';
-    pluralName: 'produtos';
-    singularName: 'produto';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    categoria: Schema.Attribute.Relation<
-      'manyToOne',
-      'api::categoria-produto.categoria-produto'
-    >;
-    cover: Schema.Attribute.Media<'images' | 'files'>;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    description: Schema.Attribute.Text;
-    gallery: Schema.Attribute.Media<'images' | 'files', true>;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::produto.produto'
-    > &
-      Schema.Attribute.Private;
-    price: Schema.Attribute.Decimal;
-    publishedAt: Schema.Attribute.DateTime;
-    sizes: Schema.Attribute.JSON;
-    slug: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
-    title: Schema.Attribute.String & Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
   };
 }
 
@@ -1181,11 +1108,9 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
-      'api::categoria-produto.categoria-produto': ApiCategoriaProdutoCategoriaProduto;
       'api::evento.evento': ApiEventoEvento;
       'api::hero-carousel.hero-carousel': ApiHeroCarouselHeroCarousel;
       'api::instrutor.instrutor': ApiInstrutorInstrutor;
-      'api::produto.produto': ApiProdutoProduto;
       'api::site-config.site-config': ApiSiteConfigSiteConfig;
       'api::treino.treino': ApiTreinoTreino;
       'plugin::content-releases.release': PluginContentReleasesRelease;
