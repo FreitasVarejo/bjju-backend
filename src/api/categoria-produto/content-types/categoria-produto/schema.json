@@ -20,6 +20,9 @@
       "type": "string",
       "required": true
     },
+    "order": {
+      "type": "integer"
+    },
     "produtos": {
       "type": "relation",
       "relation": "oneToMany",

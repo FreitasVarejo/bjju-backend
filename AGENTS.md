@@ -23,7 +23,9 @@ npm run dev          # Strapi em modo desenvolvimento (hot-reload, SQLite)
 npm run build        # Compila TypeScript + admin panel para dist/
 npm start            # Inicia em modo produção (requer build prévio)
 npm run seed:example # Popula o banco com dados de exemplo
+npm run seed:mock    # Cria 4 categorias + 80 produtos BJJ mockados
 npm run console      # REPL interativo do Strapi
+node scripts/patch-forms-link.js  # Atualiza produtos mock: 50% com formsLink aberto
 ```
 
 **Docker:**
@@ -91,11 +93,13 @@ src/
 ├── index.ts          # Lifecycle hooks: register/bootstrap (vazio)
 ├── admin/            # Customização do admin panel
 ├── api/              # Content types e controllers
-│   ├── about/        # Single type
-│   ├── article/      # Collection type (draft/publish habilitado)
-│   ├── author/       # Collection type
-│   ├── category/     # Collection type
-│   └── global/       # Single type
+│   ├── site-config/        # Single type: logo (media)
+│   ├── hero-carousel/      # Single type: images (media[])
+│   ├── instrutor/          # Collection: slug, title, year, course, belt(enum), photo
+│   ├── treino/             # Collection: weekday, category, startTime, endTime, instructor
+│   ├── evento/             # Collection: slug, title, date, location, description, cover, gallery
+│   ├── produto/            # Collection: slug, title, description, price, sizes, cover, gallery, categoria, formsLink
+│   └── categoria-produto/  # Collection: slug, name, order
 ├── components/shared/
 │   ├── media.json
 │   ├── quote.json
@@ -105,7 +109,9 @@ src/
 └── extensions/       # Extensões de plugins (vazio)
 
 scripts/
-└── seed.js           # Script de seed de dados de exemplo (npm run seed:example)
+├── seed.js                 # Script de seed de dados de exemplo (npm run seed:example)
+├── seed-mock.js            # Cria 4 categorias + 80 produtos BJJ mockados (npm run seed:mock)
+└── patch-forms-link.js     # Atualiza produtos existentes: 50% com formsLink, 50% sem
 
 data/
 ├── data.json         # Dados de exemplo para o seed
@@ -127,7 +133,7 @@ O frontend `jiujitsu-unicamp` consome os seguintes content types. Estes **não e
 | `instrutores` | `/api/instrutores` | `slug`, `title`, `year` *(string)*, `course` *(string)*, `belt` *(enum)*, `photo` *(media)* |
 | `treinos` | `/api/treinos` | `slug`, `title`, `weekday` *(int)*, `category` *(int)*, `startTime` *(time HH:MM:SS)*, `endTime` *(time HH:MM:SS)*, `instructor` *(string)* |
 | `eventos` | `/api/eventos` | `slug`, `title`, `date` *(date YYYY-MM-DD)*, `location`, `description`, `category`, `cover` *(media)*, `gallery` *(media array)* |
-| `produtos` | `/api/produtos` | `slug`, `title`, `description`, `price` *(string)*, `sizes` *(JSON array)*, `cover` *(media)*, `gallery` *(media array)*, `categoria` *(relation)* |
+| `produtos` | `/api/produtos` | `slug`, `title`, `description`, `price` *(string)*, `sizes` *(JSON array)*, `cover` *(media)*, `gallery` *(media array)*, `categoria` *(relation)*, `formsLink` *(string, opcional)* |
 | `categoria-produtos` | `/api/categoria-produtos` | `slug`, `name` |
 
 ### Constraints de Enum
@@ -150,7 +156,7 @@ Campos de mídia são **objetos**, não IDs — sempre use `populate` nas querie
 
 ### Content Types do Template Padrão (Strapi)
 
-O repositório inclui o template padrão do Strapi com: `Article`, `Author`, `Category`, `Global`, `About`. Estes são usados apenas como referência/exemplo e podem ser removidos.
+O repositório foi iniciado a partir do template padrão do Strapi. Os content types de exemplo originais (`Article`, `Author`, `Category`, `Global`, `About`) **foram substituídos** pelos tipos BJJ listados acima e podem ser removidos com segurança caso ainda existam.
 
 ---
 
@@ -192,3 +198,14 @@ Não há GitHub Secrets necessários — o runner já tem acesso local ao `.env`
 - `target: ES2019`, `module: CommonJS`
 - Siga os padrões do Strapi para novos content types e customizações
 - Não adicione lógica de negócio em `src/index.ts` sem necessidade clara
+
+---
+
+## Lógica de Encomenda (formsLink)
+
+O campo `formsLink` (tipo `string`, opcional) na collection `produtos` controla se o modal de produto no frontend exibe o botão de encomenda ativo ou o botão de acompanhamento via WhatsApp.
+
+- **Com valor** → encomendas abertas para aquele produto.
+- **Nulo/ausente** → encomendas encerradas.
+
+Para atualizar produtos mock em desenvolvimento: `node scripts/patch-forms-link.js` (idempotente — pode ser rodado múltiplas vezes). O script distribui 50% com um link genérico e 50% sem.

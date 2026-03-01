@@ -452,6 +452,7 @@ export interface ApiCategoriaProdutoCategoriaProduto
     > &
       Schema.Attribute.Private;
     name: Schema.Attribute.String & Schema.Attribute.Required;
+    order: Schema.Attribute.Integer;
     produtos: Schema.Attribute.Relation<'oneToMany', 'api::produto.produto'>;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.String &
@@ -586,6 +587,7 @@ export interface ApiProdutoProduto extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.Text;
+    formsLink: Schema.Attribute.String;
     gallery: Schema.Attribute.Media<'images' | 'files', true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -593,6 +595,7 @@ export interface ApiProdutoProduto extends Struct.CollectionTypeSchema {
       'api::produto.produto'
     > &
       Schema.Attribute.Private;
+    order: Schema.Attribute.Integer;
     price: Schema.Attribute.Decimal;
     publishedAt: Schema.Attribute.DateTime;
     sizes: Schema.Attribute.JSON;
