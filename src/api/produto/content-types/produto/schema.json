@@ -45,11 +45,17 @@
         "files"
       ]
     },
+    "order": {
+      "type": "integer"
+    },
     "categoria": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::categoria-produto.categoria-produto",
       "inversedBy": "produtos"
+    },
+    "formsLink": {
+      "type": "string"
     }
   }
 }
