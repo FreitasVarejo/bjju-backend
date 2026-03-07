@@ -11,12 +11,18 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "images": {
+    "imagesDesktop": {
       "type": "media",
       "multiple": true,
       "allowedTypes": [
-        "images",
-        "files"
+        "images"
+      ]
+    },
+    "imagesMobile": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images"
       ]
     }
   }
